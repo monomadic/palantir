@@ -1,0 +1,14 @@
+[package]
+name = "palantir"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "palantir"
+path = "cli"
+
+[dependencies]
+
+[workspace]
+default-members = ["cli"]
+members = ["cli"]
