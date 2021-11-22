@@ -6,9 +6,13 @@ version = 3
 name = "cli"
 version = "0.1.0"
 dependencies = [
- "palantir",
+ "parser",
 ]
 
 [[package]]
 name = "palantir"
+version = "0.1.0"
+
+[[package]]
+name = "parser"
 version = "0.1.0"
