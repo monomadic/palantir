@@ -7,3 +7,4 @@ edition = "2021"
 parser = { path = "../parser" }
 site = { path = "../site" }
 clap = "2.33.3"
+renderer = { path = "../renderer" }

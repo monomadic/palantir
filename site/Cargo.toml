@@ -7,3 +7,5 @@ edition = "2021"
 
 [dependencies]
 server = { path = "../server" }
+parser = { path = "../parser" }
+renderer = { path = "../renderer" }

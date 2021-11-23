@@ -1,8 +1,10 @@
-use site;
+use renderer::Renderable;
+use site::Document;
 use std::path::PathBuf;
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
-    site::Site::read_from_path(PathBuf::from("./")).map(|_| ())
+    println!("{}", Document::read(PathBuf::from("./"))?.render_html());
+    Ok(())
 }
 
 fn main() {
