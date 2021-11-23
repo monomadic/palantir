@@ -11,4 +11,4 @@ path = "cli"
 
 [workspace]
 default-members = ["cli"]
-members = ["cli"]
+members = ["cli", "parser"]
