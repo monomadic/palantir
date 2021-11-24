@@ -9,6 +9,10 @@ pub enum Statement {
     Heading(matchers::Heading),
 }
 
+pub(crate) fn statements<'a>(i: Span<'a>) -> IResult<Span<'a>, Vec<Statement>> {
+    nom::multi::many0(statement)(i)
+}
+
 pub(crate) fn statement<'a>(i: Span<'a>) -> IResult<Span<'a>, Statement> {
     nom::branch::alt((
         nom::combinator::map(matchers::heading, Statement::Heading),

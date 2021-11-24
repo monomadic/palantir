@@ -2,7 +2,8 @@ use page::{Document, Page, Renderable};
 use std::path::PathBuf;
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let mut page = Page::new(PathBuf::from("./examples/index.md"));
+    let path = PathBuf::from("./examples/index.md");
+    let mut page = Page::new(path);
     page.read()?;
 
     println!("{}", page.render_html());

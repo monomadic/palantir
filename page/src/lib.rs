@@ -28,7 +28,11 @@ impl Document for Page {
 impl Renderable for Page {
     fn render_html(&self) -> String {
         let data: &str = &(self.data.clone().unwrap()).clone(); // fix this garbage
-        let html = parser::parse(data).unwrap().render_html();
+        let html = parser::parse(data)
+            .unwrap()
+            .iter()
+            .map(|s| s.render_html())
+            .collect::<String>();
         String::from(html)
     }
 }
