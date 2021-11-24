@@ -1,19 +1,17 @@
-use parser::Statement;
-use std::fmt::Formatter;
+// use parser::Statement;
+use site::{Parseable, Renderable};
+// use std::fmt::Formatter;
 
-pub trait Renderable {
-    fn render_html(&self) -> String;
-}
+// impl Renderable for Parseable {
+//     fn render_html(&self) -> String {
+//         String::from("rrr")
+//     }
+// }
 
-impl Renderable for Statement {
-    fn render_html(&self) -> String {
-        String::from("rrr")
-    }
-}
+// impl std::fmt::Debug for dyn Renderable {
+//         let _ = write!(f, "<Renderable>");
+//         Ok(())
+//     }
+// }
 
-impl std::fmt::Debug for dyn Renderable {
-    fn fmt(&self, f: &mut Formatter) -> Result<(), std::fmt::Error> {
-        write!(f, "<Renderable>");
-        Ok(())
-    }
-}
+// impl Renderable for &str {}

@@ -1,9 +1,11 @@
-use renderer::Renderable;
 use site::Document;
 use std::path::PathBuf;
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
-    println!("{}", Document::read(PathBuf::from("./"))?.render_html());
+    let doc = Document::new(PathBuf::from("./"))?;
+    doc.read()?;
+
+    println!("{}", doc.render_html());
     Ok(())
 }
 

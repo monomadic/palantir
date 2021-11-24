@@ -1,3 +1,5 @@
+use site::Renderable;
+
 #[derive(Debug)]
 pub enum Statement {
     Text(String),
@@ -11,8 +13,8 @@ impl Default for Statement {
     }
 }
 
-// impl Renderable for Statement {
-//     fn render_html(&self) -> String {
-
-//     }
-// }
+impl Renderable for Statement {
+    fn render_html(&self) -> String {
+        String::from("hello there")
+    }
+}
