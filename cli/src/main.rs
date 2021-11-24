@@ -1,11 +1,11 @@
-use site::Document;
+use page::{Document, Page, Renderable};
 use std::path::PathBuf;
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let doc = Document::new(PathBuf::from("./"))?;
-    doc.read()?;
+    let mut page = Page::new(PathBuf::from("./examples/index.md"));
+    page.read()?;
 
-    println!("{}", doc.render_html());
+    println!("{}", page.render_html());
     Ok(())
 }
 

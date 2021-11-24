@@ -16,3 +16,9 @@ pub trait Parseable {
 pub trait Servable {
     fn request(path: &str);
 }
+
+// pub trait Resource {
+//     mut Content;
+//     fn update(&mut self);
+//     fn read();
+// }
