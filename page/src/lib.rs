@@ -3,18 +3,18 @@ use std::path::{Path, PathBuf};
 
 pub struct Page {
     path: PathBuf,
-    memo: String,
+    data: Option<String>,
 }
 
 impl Document for Page {
     fn new<P: AsRef<Path>>(path: P) -> Self {
         Page {
             path: path.as_ref().to_path_buf(),
-            memo: String::new(),
+            data: None,
         }
     }
     fn read(&mut self) -> Result<(), Box<dyn std::error::Error>> {
-        self.memo = std::fs::read_to_string(&self.path)?;
+        self.data = Some(std::fs::read_to_string(&self.path)?);
         Ok(())
     }
     fn parse(&mut self) -> Result<(), Box<dyn std::error::Error>> {
@@ -27,6 +27,8 @@ impl Document for Page {
 
 impl Renderable for Page {
     fn render_html(&self) -> String {
-        String::from("I'm html!")
+        let data: &str = &(self.data.clone().unwrap()).clone(); // fix this garbage
+        let html = parser::parse(data).unwrap().render_html();
+        String::from(html)
     }
 }

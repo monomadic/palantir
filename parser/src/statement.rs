@@ -15,6 +15,9 @@ impl Default for Statement {
 
 impl Renderable for Statement {
     fn render_html(&self) -> String {
-        String::from("hello there")
+        match self {
+            Statement::Text(s) => String::from(s),
+            _ => unimplemented!(),
+        }
     }
 }

@@ -191,6 +191,7 @@ name = "page"
 version = "0.1.0"
 dependencies = [
  "parser",
+ "rctree 0.4.0",
  "site",
 ]
 
