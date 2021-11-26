@@ -3,12 +3,12 @@ mod matchers;
 mod expression;
 mod statement;
 
-use nom::{Finish, IResult};
+use nom::Finish;
 use nom_locate::LocatedSpan;
 
 pub type Span<'a> = LocatedSpan<&'a str, &'a str>;
 pub type ParserResult<T> = Result<T, String>;
-pub(crate) type NomResult<'a, T> = IResult<Span<'a>, T>;
+pub(crate) type NomResult<'a, T> = nom::IResult<Span<'a>, T>;
 
 pub fn parse<'a>(i: impl Into<Span<'a>>) -> Result<Vec<statement::Statement>, String> {
     statement::statements(i.into())

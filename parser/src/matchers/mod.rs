@@ -5,4 +5,4 @@ mod heading;
 pub(crate) use heading::*;
 
 mod paragraph;
-pub use paragraph::*;
+pub(crate) use paragraph::*;

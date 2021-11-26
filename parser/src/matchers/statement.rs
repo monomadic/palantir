@@ -1,5 +1,4 @@
-use crate::{matchers, Span};
-use nom::IResult;
+use crate::{matchers, NomResult, Span};
 use site::Renderable;
 
 #[derive(Debug)]
@@ -9,11 +8,11 @@ pub enum Statement {
     Heading(matchers::Heading),
 }
 
-pub(crate) fn statements<'a>(i: Span<'a>) -> IResult<Span<'a>, Vec<Statement>> {
+pub(crate) fn statements<'a>(i: Span<'a>) -> NomResult<Vec<Statement>> {
     nom::multi::many0(statement)(i)
 }
 
-pub(crate) fn statement<'a>(i: Span<'a>) -> IResult<Span<'a>, Statement> {
+pub(crate) fn statement<'a>(i: Span<'a>) -> NomResult<Statement> {
     nom::branch::alt((
         nom::combinator::map(matchers::heading, Statement::Heading),
         nom::combinator::map(matchers::text, |s| {

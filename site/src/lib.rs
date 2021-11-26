@@ -23,8 +23,8 @@ pub trait Servable {
 //     fn read();
 // }
 
-impl<T> Renderable for Vec<T> {
+impl<R: Renderable> Renderable for Vec<R> {
     fn render_html(&self) -> String {
-        self.iter().map(|i| i.render_html()).collect::<String>()s
+        self.iter().map(|i| i.render_html()).collect::<String>()
     }
 }

@@ -1,5 +1,4 @@
-use crate::matchers;
-use crate::{IResult, Span};
+use crate::{NomResult, Span};
 use site::Renderable;
 
 #[derive(Debug, Default)]
@@ -8,9 +7,7 @@ pub struct Heading {
     content: String,
 }
 
-pub(crate) fn heading<'a>(
-    i: Span<'a>,
-) -> IResult<Span<'a>, (usize, Vec<crate::expression::Expression>)> {
+pub(crate) fn heading<'a>(i: Span<'a>) -> NomResult<(usize, Vec<crate::expression::Expression>)> {
     nom::sequence::tuple((
         nom::multi::many0(nom::bytes::complete::tag("#")),
         nom::character::complete::space1,
