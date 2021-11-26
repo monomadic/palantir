@@ -1,15 +1,17 @@
 mod matchers;
+// pub use matchers::Statement;
+mod expression;
+mod statement;
 
-pub use matchers::Statement;
 use nom::{Finish, IResult};
 use nom_locate::LocatedSpan;
 
 pub type Span<'a> = LocatedSpan<&'a str, &'a str>;
 pub type ParserResult<T> = Result<T, String>;
-pub(crate) type NomResult<T> = IResult<Span<'a>, T>;
+pub(crate) type NomResult<'a, T> = IResult<Span<'a>, T>;
 
-pub fn parse<'a>(i: impl Into<Span<'a>) -> Result<Vec<Statement>, String> {
-    matchers::statements(i.into())
+pub fn parse<'a>(i: impl Into<Span<'a>>) -> Result<Vec<statement::Statement>, String> {
+    statement::statements(i.into())
         .finish()
         .map(|(_, statements)| statements)
         .map_err(|e| e.to_string())

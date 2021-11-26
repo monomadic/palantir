@@ -8,21 +8,15 @@ pub struct Heading {
     content: String,
 }
 
-pub(crate) fn heading<'a>(i: Span<'a>) -> IResult<Span<'a>, Heading> {
+pub(crate) fn heading<'a>(
+    i: Span<'a>,
+) -> IResult<Span<'a>, (usize, Vec<crate::expression::Expression>)> {
     nom::sequence::tuple((
         nom::multi::many0(nom::bytes::complete::tag("#")),
         nom::character::complete::space1,
-        matchers::text,
+        nom::multi::many0(crate::expression::expression),
     ))(i)
-    .map(|(r, (hash, _, text))| {
-        (
-            r,
-            Heading {
-                level: hash.len(),
-                content: String::from(&**text.fragment()),
-            },
-        )
-    })
+    .map(|(r, (hash, _, expr))| (r, (hash.len(), expr)))
 }
 
 impl Renderable for Heading {
