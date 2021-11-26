@@ -22,3 +22,9 @@ pub trait Servable {
 //     fn update(&mut self);
 //     fn read();
 // }
+
+impl<T> Renderable for Vec<T> {
+    fn render_html(&self) -> String {
+        self.iter().map(|i| i.render_html()).collect::<String>()s
+    }
+}

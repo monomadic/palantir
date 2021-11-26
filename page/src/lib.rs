@@ -7,7 +7,7 @@ pub struct Page {
 }
 
 impl Document for Page {
-    fn new<P: AsRef<Path>>(path: P) -> Self {
+    fn new(path: impl AsRef<Path>) -> Self {
         Page {
             path: path.as_ref().to_path_buf(),
             data: None,

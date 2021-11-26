@@ -6,8 +6,9 @@ use nom_locate::LocatedSpan;
 
 pub type Span<'a> = LocatedSpan<&'a str, &'a str>;
 pub type ParserResult<T> = Result<T, String>;
+pub(crate) type NomResult<T> = IResult<Span<'a>, T>;
 
-pub fn parse<'a, S: Into<Span<'a>>>(i: S) -> Result<Vec<Statement>, String> {
+pub fn parse<'a>(i: impl Into<Span<'a>) -> Result<Vec<Statement>, String> {
     matchers::statements(i.into())
         .finish()
         .map(|(_, statements)| statements)
