@@ -1,4 +1,4 @@
-use crate::{matchers::text, NomResult, Span};
+use crate::{matchers, NomResult, Span};
 use site::Renderable;
 
 #[derive(Debug)]
@@ -8,14 +8,33 @@ pub enum Expression {
 }
 
 pub(crate) fn expression<'a>(i: Span<'a>) -> NomResult<Expression> {
-    text(i).map(|(r, t)| (r, Expression::Text(t.fragment().to_string())))
+    nom::branch::alt((
+        nom::combinator::map(matchers::bold, Expression::BoldText),
+        nom::combinator::map(matchers::text, |t| {
+            Expression::Text(t.fragment().to_string())
+        }),
+    ))(i)
 }
 
 impl Renderable for Expression {
     fn render_html(&self) -> String {
         match self {
             Expression::Text(s) => s.into(),
-            Expression::BoldText(expr) => expr.render_html(),
+            Expression::BoldText(expr) => format!("<strong>{}</strong>", expr.render_html()),
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_heading() {
+        assert!(expression(Span::from("")).is_err());
+        assert_eq!(
+            expression(Span::from("**hello**")).unwrap().1.render_html(),
+            "<strong>hello</strong>"
+        );
     }
 }

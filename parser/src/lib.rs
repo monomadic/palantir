@@ -25,7 +25,7 @@ pub fn parse<'a>(i: impl Into<Span<'a>>) -> Result<AST, String> {
     match statement::statements(i.into()).finish() {
         Ok((r, nodes)) => {
             if r.len() != 0 {
-                return Err(format!("unexpected EOF: {}", r));
+                return Err(format!("Unexpected: {}", r));
             } else {
                 Ok(AST { nodes })
             }

@@ -1,11 +1,4 @@
 use crate::{NomResult, Span};
-use site::Renderable;
-
-#[derive(Debug, Default)]
-pub struct Heading {
-    level: usize,
-    content: String,
-}
 
 pub(crate) fn heading<'a>(i: Span<'a>) -> NomResult<(usize, Vec<crate::expression::Expression>)> {
     nom::sequence::tuple((
@@ -16,8 +9,13 @@ pub(crate) fn heading<'a>(i: Span<'a>) -> NomResult<(usize, Vec<crate::expressio
     .map(|(r, (hash, _, expr))| (r, (hash.len(), expr)))
 }
 
-impl Renderable for Heading {
-    fn render_html(&self) -> String {
-        format!("<h{}>{}</h{}>", self.level, self.content, self.level)
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_heading() {
+        assert!(heading(Span::from("")).is_err());
+        assert!(heading(Span::from("# hello")).is_ok());
     }
 }
