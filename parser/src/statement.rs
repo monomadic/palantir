@@ -1,4 +1,5 @@
 use crate::{expression::Expression, NomResult, Span};
+use nom_indent::indent;
 use site::Renderable;
 
 #[derive(Debug)]
@@ -13,6 +14,13 @@ pub enum Statement {
 
 pub(crate) fn statements<'a>(i: Span<'a>) -> NomResult<Vec<Statement>> {
     nom::multi::many0(statement)(i)
+    // indent(i.fragment(), "<filename>")
+    //     .map(|(r, lines)| {
+    //         lines
+    //             .into_iter()
+    //             .map(|node| statement(node.borrow().clone().into()))
+    //     })
+    //     .collect()
 }
 
 pub(crate) fn statement<'a>(i: Span<'a>) -> NomResult<Statement> {

@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 nom = "7.1.0"
 nom-indent = { git = "https://github.com/monomadic/nom-indent" }
+# nom-indent = { path = "../../nom-indent" }
 nom_locate = "4.0.0"
 rctree = "0.4.0"
 site = { path = "../site" }

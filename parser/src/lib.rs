@@ -11,9 +11,20 @@ pub type Span<'a> = LocatedSpan<&'a str, &'a str>;
 pub type ParserResult<T> = Result<T, String>;
 pub(crate) type NomResult<'a, T> = nom::IResult<Span<'a>, T>;
 
-pub fn parse<'a>(i: impl Into<Span<'a>>) -> Result<Vec<statement::Statement>, String> {
+#[derive(Debug)]
+pub struct AST {
+    nodes: Vec<statement::Statement>, // don't leak this
+}
+
+impl Renderable for AST {
+    fn render_html(&self) -> String {
+        self.nodes.render_html()
+    }
+}
+
+pub fn parse<'a>(i: impl Into<Span<'a>>) -> Result<AST, String> {
     statement::statements(i.into())
         .finish()
-        .map(|(_, statements)| statements)
+        .map(|(_, nodes)| AST { nodes })
         .map_err(|e| e.to_string())
 }
