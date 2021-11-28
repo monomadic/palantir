@@ -5,6 +5,7 @@ mod statement;
 
 use nom::Finish;
 use nom_locate::LocatedSpan;
+pub use site::Renderable;
 
 pub type Span<'a> = LocatedSpan<&'a str, &'a str>;
 pub type ParserResult<T> = Result<T, String>;

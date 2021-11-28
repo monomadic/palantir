@@ -16,10 +16,14 @@ pub(crate) fn statements<'a>(i: Span<'a>) -> NomResult<Vec<Statement>> {
 }
 
 pub(crate) fn statement<'a>(i: Span<'a>) -> NomResult<Statement> {
-    nom::branch::alt((
-        nom::combinator::map(crate::matchers::heading, Statement::Heading),
-        nom::combinator::map(crate::matchers::paragraph, Statement::Paragraph),
+    nom::sequence::tuple((
+        nom::branch::alt((
+            nom::combinator::map(crate::matchers::heading, Statement::Heading),
+            nom::combinator::map(crate::matchers::paragraph, Statement::Paragraph),
+        )),
+        nom::character::complete::line_ending,
     ))(i)
+    .map(|(r, (statement, _eol))| (r, statement))
 }
 
 // pub(crate) fn statement<'a>(i: Span<'a>) -> IResult<Span<'a>, Statement> {

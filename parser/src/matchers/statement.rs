@@ -8,10 +8,6 @@ pub enum Statement {
     Heading(matchers::Heading),
 }
 
-pub(crate) fn statements<'a>(i: Span<'a>) -> NomResult<Vec<Statement>> {
-    nom::multi::many0(statement)(i)
-}
-
 pub(crate) fn statement<'a>(i: Span<'a>) -> NomResult<Statement> {
     nom::branch::alt((
         nom::combinator::map(matchers::heading, Statement::Heading),
@@ -19,6 +15,10 @@ pub(crate) fn statement<'a>(i: Span<'a>) -> NomResult<Statement> {
             Statement::Text(s.fragment().to_string())
         }),
     ))(i)
+}
+
+pub(crate) fn statements<'a>(i: Span<'a>) -> NomResult<Vec<Statement>> {
+    nom::multi::many0(statement)(i)
 }
 
 impl Renderable for Statement {
