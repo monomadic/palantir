@@ -8,7 +8,6 @@ use nom_locate::LocatedSpan;
 pub use site::Renderable;
 
 pub type Span<'a> = LocatedSpan<&'a str, &'a str>;
-pub type ParserResult<T> = Result<T, String>;
 pub(crate) type NomResult<'a, T> = nom::IResult<Span<'a>, T>;
 
 #[derive(Debug)]
@@ -23,8 +22,14 @@ impl Renderable for AST {
 }
 
 pub fn parse<'a>(i: impl Into<Span<'a>>) -> Result<AST, String> {
-    statement::statements(i.into())
-        .finish()
-        .map(|(_, nodes)| AST { nodes })
-        .map_err(|e| e.to_string())
+    match statement::statements(i.into()).finish() {
+        Ok((r, nodes)) => {
+            if r.len() != 0 {
+                return Err(format!("unexpected EOF: {}", r));
+            } else {
+                Ok(AST { nodes })
+            }
+        }
+        Err(e) => Err(e.to_string()),
+    }
 }

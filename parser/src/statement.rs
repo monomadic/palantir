@@ -1,5 +1,4 @@
 use crate::{expression::Expression, NomResult, Span};
-use nom_indent::indent;
 use site::Renderable;
 
 #[derive(Debug)]
@@ -29,7 +28,7 @@ pub(crate) fn statement<'a>(i: Span<'a>) -> NomResult<Statement> {
             nom::combinator::map(crate::matchers::heading, Statement::Heading),
             nom::combinator::map(crate::matchers::paragraph, Statement::Paragraph),
         )),
-        nom::character::complete::line_ending,
+        nom::character::complete::multispace1,
     ))(i)
     .map(|(r, (statement, _eol))| (r, statement))
 }
@@ -49,7 +48,7 @@ impl Renderable for Statement {
             Statement::Heading((level, expr)) => {
                 format!("<h{}>{}</h{}>", level, expr.render_html(), level)
             }
-            Statement::Paragraph(expr) => expr.render_html(),
+            Statement::Paragraph(expr) => format!("<p>{}</p>", expr.render_html()),
         }
     }
 }

@@ -6,7 +6,6 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut page = Page::new(path);
     page.read()?;
     page.parse()?;
-    // println!("{:?}", page.parse());
     println!("{}", page.render_html());
     Ok(())
 }
