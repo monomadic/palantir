@@ -7,8 +7,7 @@ mod router;
 mod site;
 
 // pub use page::Page;
-pub use config::Config;
-pub use site::Site;
+pub use crate::{config::Config, site::Site};
 
 /*
 - contains all renderable pages
