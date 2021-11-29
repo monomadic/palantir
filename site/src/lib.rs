@@ -1,9 +1,21 @@
-// mod document;
-mod site;
-// mod page;
+#[macro_use]
+extern crate log;
 
-// pub use document::Document;
+// mod page;
+mod config;
+mod router;
+mod site;
+
+// pub use page::Page;
+pub use config::Config;
 pub use site::Site;
+
+/*
+- contains all renderable pages
+- routes paths to local files
+- monitors filesystem for changes
+- notifies server of changes
+*/
 
 pub trait Renderable {
     fn render_html(&self) -> String;
@@ -11,7 +23,7 @@ pub trait Renderable {
 
 // todo: get rid of the boxes
 pub trait Parser {
-    fn parse(i: &str) -> Result<Box<dyn Renderable>, Box<dyn std::error::Error>>;
+    fn parse<R: Renderable>(i: &str) -> Result<R, Box<dyn std::error::Error>>;
 }
 
 pub trait Servable {

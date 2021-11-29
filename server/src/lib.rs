@@ -9,7 +9,7 @@ pub async fn start<R: Renderable + Sync + Send + 'static>(site: Site<R>) {
 
     let route = warp::path::full()
         .and(with_state)
-        .map(|path: FullPath, site: Arc<Site<R>>| site.request(&path.as_str().to_string()));
+        .map(|path: FullPath, site: Arc<Site<R>>| site.request_html(&path.as_str().to_string()));
 
     warp::serve(route).run(([127, 0, 0, 1], 3030)).await;
 }
