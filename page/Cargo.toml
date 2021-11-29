@@ -9,3 +9,4 @@ edition = "2021"
 parser = { path = "../parser" }
 site = { path = "../site" }
 rctree = "0.4.0"
+log = "0.4.0"

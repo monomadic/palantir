@@ -1,3 +1,4 @@
+use log::{info, warn};
 pub use site::{Document, Renderable};
 use std::path::{Path, PathBuf};
 
@@ -14,6 +15,7 @@ pub enum PageError {
 
 impl Document for Page {
     fn new(path: impl AsRef<Path>) -> Self {
+        info!("reading {}", path.as_ref().display());
         Self {
             file_path: path.as_ref().to_path_buf(),
             ..Self::default()

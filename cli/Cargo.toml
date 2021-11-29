@@ -6,6 +6,8 @@ edition = "2021"
 [dependencies]
 parser = { path = "../parser" }
 site = { path = "../site" }
-clap = "2.33.3"
+clap = "3.0.0-beta.5"
 renderer = { path = "../renderer" }
 page = { path = "../page" }
+log = "0.4.0"
+env_logger = "0.9.0"
