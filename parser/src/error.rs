@@ -7,11 +7,11 @@ pub enum ParserError {
     Message(String),
 }
 
-impl ParserError {
-    pub(crate) fn new<E: Into<BoxError>>(err: E) -> Self {
-        ParserError::Other(err.into())
-    }
-}
+// impl ParserError {
+//     pub(crate) fn new<E: Into<BoxError>>(err: E) -> Self {
+//         ParserError::Other(err.into())
+//     }
+// }
 
 impl std::error::Error for ParserError {}
 

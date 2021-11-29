@@ -20,7 +20,7 @@ pub struct AST {
 pub struct MarkdownParser;
 
 impl Parser<AST> for MarkdownParser {
-    fn parse(i: &str) -> Result<AST, Box<dyn std::error::Error>> {
+    fn parse(&self, i: &str) -> Result<AST, Box<dyn std::error::Error>> {
         parse(i)
     }
 }

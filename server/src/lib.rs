@@ -11,7 +11,11 @@ pub async fn start<R: Renderable + Sync + Send + 'static, P: Parser<R> + Sync + 
 
     let route = warp::path::full()
         .and(with_state)
-        .map(|path: FullPath, site: Arc<Site<R, P>>| site.request_html(&path.as_str().to_string()));
+        .map(|path: FullPath, site: Arc<Site<R, P>>| {
+            site.get_renderer(&path.as_str().to_string())
+                .expect(&format!("error requesting renderer for {}", path.as_str()))
+                .render_html()
+        });
 
     warp::serve(route).run(([127, 0, 0, 1], 3030)).await;
 }
