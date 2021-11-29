@@ -22,8 +22,8 @@ pub trait Renderable {
 }
 
 // todo: get rid of the boxes
-pub trait Parser {
-    fn parse<R: Renderable>(i: &str) -> Result<R, Box<dyn std::error::Error>>;
+pub trait Parser<R: Renderable> {
+    fn parse(i: &str) -> Result<R, Box<dyn std::error::Error>>;
 }
 
 pub trait Servable {

@@ -5,9 +5,9 @@ fn assert_statement_eq(test: &str, html: &str, debug: &str) {
     assert_eq!(&parser::parse(test).unwrap().render_html(), html);
 }
 
-fn assert_eq(test: &str, html: &str) {
-    assert_eq!(&parser::parse(test).unwrap().render_html(), html);
-}
+// fn assert_eq(test: &str, html: &str) {
+//     assert_eq!(&parser::parse(test).unwrap().render_html(), html);
+// }
 
 #[test]
 fn test_statements() {

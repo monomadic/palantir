@@ -1,27 +1,33 @@
-use crate::{Config, Renderable};
+use crate::{Config, Parser, Renderable};
 use std::collections::HashMap;
-use std::path::Path;
 
 #[derive(Default)]
-pub struct Site<R: Renderable> {
+pub struct Site<R: Renderable, P: Parser<R>> {
     // pub base_path: PathBuf,
     // pub output_path: PathBuf,
     // page_cache: HashMap<String, String>,
-    documents: HashMap<String, R>, // localpath, ast
-    _config: Config,
+    ast_cache: HashMap<String, R>, // localpath, ast
+    config: Config,
+    parser: P,
 }
 
-impl<R: Renderable> Site<R> {
-    pub fn new() -> Self {
+impl<R: Renderable, P: Parser<R>> Site<R, P> {
+    pub fn new(parser: P) -> Self {
         Self {
-            documents: HashMap::new(),
-            // page_cache: HashMap::new(),
-            _config: Config::default(),
+            ast_cache: HashMap::new(),
+            config: Config::default(),
+            parser,
         }
     }
 
-    pub fn read<P: AsRef<Path>>(_path: P) -> Result<Site<R>, Box<dyn std::error::Error>> {
-        Ok(Self::new())
+    pub fn read(&mut self) -> Result<(), Box<dyn std::error::Error>> {
+        for file in glob::glob(&self.config.page_glob)? {
+            match file {
+                Ok(path) => println!("{:?}", path.display()),
+                Err(e) => println!("{:?}", e),
+            }
+        }
+        Ok(())
     }
 
     pub fn request(&self, path: &str) -> &R {
@@ -29,7 +35,7 @@ impl<R: Renderable> Site<R> {
 
         info!("Requested {}", local_path);
 
-        match self.documents.get(&local_path) {
+        match self.ast_cache.get(&local_path) {
             Some(doc) => doc,
             None => todo!("check for the file"),
         }

@@ -1,6 +1,15 @@
 use std::path::PathBuf;
 
-#[derive(Default)]
 pub struct Config {
-    _base_path: PathBuf,
+    pub base_path: PathBuf,
+    pub page_glob: String,
+}
+
+impl Default for Config {
+    fn default() -> Self {
+        Self {
+            base_path: PathBuf::from("."),
+            page_glob: String::from("examples/**/*.md"),
+        }
+    }
 }
