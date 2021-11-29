@@ -1,4 +1,4 @@
-// use page::{Page, Renderable};
+use page::{Page, Renderable};
 use std::path::Path;
 
 pub(crate) fn build<P: AsRef<Path>>(_path: P) -> Result<(), Box<dyn std::error::Error>> {
