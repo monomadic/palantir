@@ -12,17 +12,17 @@ pub use site::{Parser, Renderable};
 pub type Span<'a> = LocatedSpan<&'a str, &'a str>;
 pub(crate) type NomResult<'a, T> = nom::IResult<Span<'a>, T>;
 
-#[derive(Debug)]
-pub struct AST {
-    nodes: Vec<statement::Statement>, // don't leak this
-}
-
 pub struct MarkdownParser;
 
 impl Parser<AST> for MarkdownParser {
     fn parse(&self, i: &str) -> Result<AST, Box<dyn std::error::Error>> {
         parse(i)
     }
+}
+
+#[derive(Debug)]
+pub struct AST {
+    nodes: Vec<statement::Statement>, // don't leak this
 }
 
 impl Renderable for AST {

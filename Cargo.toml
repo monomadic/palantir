@@ -1,7 +1,6 @@
 [workspace]
 members = [
     "cli",
-    "page",
     "parser",
     "renderer",
     "server",

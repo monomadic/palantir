@@ -29,12 +29,6 @@ pub trait Servable {
     fn request(path: &str);
 }
 
-// pub trait Resource {
-//     mut Content;
-//     fn update(&mut self);
-//     fn read();
-// }
-
 impl<R: Renderable> Renderable for Vec<R> {
     fn render_html(&self) -> String {
         self.iter().map(|i| i.render_html()).collect::<String>()

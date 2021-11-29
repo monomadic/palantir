@@ -54,16 +54,29 @@ impl<R: Renderable, P: Parser<R>> Site<R, P> {
         info!("Requested {}", path);
 
         // self.update_cache(path)?;
-        Ok(self.ast_cache.get(path).expect("cache error"))
+        Ok(self.ast_cache.get(path).expect(&format!(
+            "cache error for: {:?}\ncache keys:{:?}",
+            path,
+            self.ast_cache.keys()
+        )))
     }
 
     pub fn render_html(&self, path: &str) -> String {
-        // let local_path = crate::router::route(path);
-        // info!("Requested {}", local_path);
+        match self.ast_cache.get(path) {
+            Some(doc) => doc.render_html(),
+            None => format!(
+                "cache error for: {}\ncache keys: {:?}",
+                path,
+                self.ast_cache.keys()
+            ),
+        }
+    }
 
-        match self.get_renderer(&crate::router::to_local_path(path)) {
-            Ok(doc) => doc.render_html(),
-            Err(e) => format!("{:?}", e),
+    /// request a html page for a given url path
+    pub fn request_html(&self, path: &str) -> String {
+        match self.get_renderer(path) {
+            Ok(page) => page.render_html(),
+            Err(e) => format!("error {:?}", e),
         }
     }
 
