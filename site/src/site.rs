@@ -24,9 +24,9 @@ impl<R: Renderable, P: Parser<R>> Site<R, P> {
     pub fn read(&mut self) -> Result<(), Box<dyn std::error::Error>> {
         for file in glob::glob(&self.config.page_glob)? {
             match file {
-                Ok(path) => self.update_cache(&crate::router::from_local_path(
-                    path.to_str().unwrap().into(),
-                ))?,
+                Ok(path) => {
+                    self.update_cache(&self.config.from_local_path(path.to_str().unwrap().into()))?
+                }
                 Err(e) => println!("{:?}", e),
             }
         }
@@ -38,7 +38,7 @@ impl<R: Renderable, P: Parser<R>> Site<R, P> {
             Some(_) => (),
             None => {
                 warn!("File {} is not in AST cache, attempting to parse it", path);
-                let local_path = crate::router::to_local_path(path);
+                let local_path = self.config.to_local_path(path);
                 let file = std::fs::read_to_string(&local_path)?;
                 // self.page_cache.insert(local_path, file);
 

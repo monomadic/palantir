@@ -3,7 +3,6 @@ extern crate log;
 
 // mod page;
 mod config;
-mod router;
 mod site;
 
 // pub use page::Page;
