@@ -2,6 +2,8 @@ use site::{Parser, Renderable, Site};
 use std::sync::Arc;
 use warp::{path::FullPath, Filter};
 
+// can we abstract this so we don't use Site, just traits?
+
 #[tokio::main]
 pub async fn start<R: Renderable + Sync + Send + 'static, P: Parser<R> + Sync + Send + 'static>(
     site: Site<R, P>,
