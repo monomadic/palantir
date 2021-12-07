@@ -7,6 +7,7 @@ use warp::{path::FullPath, Filter};
 #[tokio::main]
 pub async fn start<R: Renderable + Sync + Send + 'static, P: Parser<R> + Sync + Send + 'static>(
     site: Site<R, P>,
+    host: Option<std::net::SocketAddr>,
 ) {
     let site_arc = Arc::new(site);
     let with_state = warp::any().map(move || site_arc.clone());
@@ -15,5 +16,7 @@ pub async fn start<R: Renderable + Sync + Send + 'static, P: Parser<R> + Sync + 
         .and(with_state)
         .map(|path: FullPath, site: Arc<Site<R, P>>| site.render_html(&path.as_str().to_string()));
 
-    warp::serve(route).run(([127, 0, 0, 1], 3030)).await;
+    warp::serve(route)
+        .run(host.unwrap_or(([127, 0, 0, 1], 3030).into()))
+        .await;
 }

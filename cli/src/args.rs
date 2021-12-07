@@ -9,7 +9,7 @@ pub(crate) fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     match opts.command {
         Command::Build { input } => build::build(input),
-        Command::Serve => serve::serve(),
+        Command::Serve { url } => serve::serve(&url),
     }
 }
 
@@ -34,5 +34,9 @@ enum Command {
         input: PathBuf,
     },
     #[clap()]
-    Serve,
+    Serve {
+        /// Server host resource
+        #[clap(short = 'u', long = "url", default_value = "127.0.0.1:3030")]
+        url: String,
+    },
 }

@@ -48,7 +48,7 @@ impl Config {
         self.base_path
             .join(self.page_glob.clone())
             .to_str()
-            .unwrap_or("content/*.md")
+            .expect("path in templates glob did not unwrap")
             .to_string()
     }
 }
