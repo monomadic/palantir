@@ -44,6 +44,14 @@ impl Config {
         // self.base_path.join(path).join("index.html")
     }
 
+    pub(crate) fn input_path(&self, route: &str) -> PathBuf {
+        PathBuf::from(route)
+            .strip_prefix("/")
+            .unwrap_or(&PathBuf::from(route));
+
+        PathBuf::from(self.base_path.clone()).join("index.md")
+    }
+
     pub(crate) fn templates_glob(&self) -> String {
         self.base_path
             .join(self.page_glob.clone())

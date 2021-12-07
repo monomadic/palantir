@@ -68,13 +68,15 @@ impl<R: Renderable, P: Parser<R>> Site<R, P> {
     pub fn render_html(&self, path: &str) -> String {
         info!("Rendering HTML for {}", path);
 
-        match self.ast_cache.get(&self.config.output_path(path)) {
-            Some(doc) => doc.render_html(),
-            None => format!(
-                "cache error for: {}\ncache keys: {:?}",
-                path,
-                self.ast_cache.keys()
-            ),
+        let input_path = &self.config.input_path(path);
+
+        // bypass cache for now. reduce complexity!
+        match std::fs::read_to_string(input_path) {
+            Ok(file) => match self.parser.parse(&*file) {
+                Ok(ast) => ast.render_html(),
+                Err(e) => format!("error rendering: {:?} {:?}", input_path, e),
+            },
+            Err(e) => format!("error reading: {:?} {:?}", input_path, e),
         }
     }
 
