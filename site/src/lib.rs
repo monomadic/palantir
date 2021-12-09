@@ -8,13 +8,6 @@ mod site;
 // pub use page::Page;
 pub use crate::{config::Config, site::Site};
 
-/*
-- contains all renderable pages
-- routes paths to local files
-- monitors filesystem for changes
-- notifies server of changes
-*/
-
 pub trait Renderable {
     fn render_html(&self) -> String;
 }

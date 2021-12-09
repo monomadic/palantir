@@ -2,6 +2,9 @@ use crate::{Config, Parser, Renderable};
 use std::collections::HashMap;
 use std::path::PathBuf;
 
+/**
+ * Manages configuration, page cache, and router.
+ */
 #[derive(Default)]
 pub struct Site<R: Renderable, P: Parser<R>> {
     // pub base_path: PathBuf,
