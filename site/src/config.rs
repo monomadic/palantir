@@ -1,4 +1,4 @@
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 pub struct Config {
     pub base_path: PathBuf,
@@ -15,13 +15,13 @@ impl Default for Config {
 }
 
 impl Config {
-    /// Converts a local file path into a url path.
-    pub(crate) fn get_route(&self, path: impl AsRef<Path>) -> String {
-        "/".into()
-    }
+    // /// Converts a file path to an url path.
+    // pub(crate) fn route(&self, path: impl AsRef<Path>) -> String {
+    //     "/".into()
+    // }
 
-    /// Returns the local file output path for a given url.
-    pub(crate) fn get_output_path(&self, path: &str) -> PathBuf {
+    /// Returns the default file output location for a given url path.
+    pub(crate) fn output_path(&self, route: &str) -> PathBuf {
         // let path: String = path.strip_prefix("/").unwrap_or(path).into();
         // let mut local_path = PathBuf::new().join(".").join(self.base_path.clone());
         // local_path.push(path);
@@ -35,23 +35,29 @@ impl Config {
         // local_path
         // println!("config {:?}", self.base_path);
 
-        PathBuf::from(path)
+        PathBuf::from(route)
             .strip_prefix("/")
-            .unwrap_or(&PathBuf::from(path));
+            .unwrap_or(&PathBuf::from(route));
 
         PathBuf::from(self.base_path.clone()).join("index.html")
 
         // self.base_path.join(path).join("index.html")
     }
 
-    pub(crate) fn glob_templates(&self) -> Result<Vec<PathBuf>, Box<dyn std::error::Error>> {
-        let mut glob_dir = self.base_path.clone();
-        glob_dir.push(self.page_glob.clone());
-        println!("{:?}", glob_dir);
+    pub(crate) fn input_path(&self, route: &str) -> PathBuf {
+        PathBuf::from(route)
+            .strip_prefix("/")
+            .unwrap_or(&PathBuf::from(route));
 
-        // glob::glob(&glob_dir.to_str().unwrap())?.filter_map(Result::ok)
-        // .collect()
-        Ok(Vec::new())
+        PathBuf::from(self.base_path.clone()).join("index.md")
+    }
+
+    pub(crate) fn templates_glob(&self) -> String {
+        self.base_path
+            .join(self.page_glob.clone())
+            .to_str()
+            .expect("path in templates glob did not unwrap")
+            .to_string()
     }
 }
 
@@ -59,37 +65,37 @@ impl Config {
 mod test {
     use super::*;
 
-    fn assert_get_route(base_path: &str, path: &str, local_path: &str) {
+    // fn assert_route(base_path: &str, path: &str, local_path: &str) {
+    //     let config = Config {
+    //         base_path: PathBuf::from(base_path),
+    //         ..Config::default()
+    //     };
+
+    //     assert_eq!(config.route(path), local_path);
+    // }
+
+    fn assert_output_path(base_path: &str, path: &str, local_path: &str) {
         let config = Config {
             base_path: PathBuf::from(base_path),
             ..Config::default()
         };
 
-        assert_eq!(config.get_route(path), local_path);
-    }
-
-    fn assert_get_output_path(base_path: &str, path: &str, local_path: &str) {
-        let config = Config {
-            base_path: PathBuf::from(base_path),
-            ..Config::default()
-        };
-
-        assert_eq!(config.get_output_path(path).to_str().unwrap(), local_path);
+        assert_eq!(config.output_path(path).to_str().unwrap(), local_path);
     }
 
     #[test]
-    fn test_get_output_path() {
-        assert_get_output_path("", "", "index.html");
-        assert_get_output_path("", "/", "index.html");
-        assert_get_output_path("", "../", "index.html");
-        assert_get_output_path("", "../../posts/../", "index.html");
-        assert_get_output_path("base", "/", "base/index.html");
-        assert_get_output_path("base/posts", "../", "base/posts/index.html");
+    fn test_output_path() {
+        assert_output_path("", "", "index.html");
+        assert_output_path("", "/", "index.html");
+        assert_output_path("", "../", "index.html");
+        assert_output_path("", "../../posts/../", "index.html");
+        assert_output_path("base", "/", "base/index.html");
+        assert_output_path("base/posts", "../", "base/posts/index.html");
         // assert_get_output_path("base", "/posts.html", "base/posts/index.html"); // todo: sophisticated routes
     }
 
-    #[test]
-    fn test_get_route() {
-        assert_get_route("base", "base/index.html", "/base/");
-    }
+    // #[test]
+    // fn test_route() {
+    //     assert_route("base", "base/index.html", "/");
+    // }
 }
