@@ -5,22 +5,14 @@ mod build;
 mod serve;
 
 pub(crate) fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let opts: Opts = Opts::parse();
-
-    match opts.command {
+    match Command::parse() {
         Command::Build { input } => build::build(input),
         Command::Serve => serve::serve(),
     }
 }
 
 #[derive(Parser)]
-#[clap(name = "Palantir")]
-pub struct Opts {
-    #[clap(subcommand)]
-    command: Command,
-}
-
-#[derive(Parser)]
+#[clap(name = "palantir")]
 enum Command {
     #[clap()]
     Build {
