@@ -4,6 +4,7 @@ extern crate log;
 // mod page;
 mod config;
 mod site;
+mod template;
 
 // pub use page::Page;
 pub use crate::{config::Config, site::Site};

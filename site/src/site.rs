@@ -1,4 +1,5 @@
 use crate::{Config, Parser, Renderable};
+use askama::Template;
 use std::collections::HashMap;
 use std::path::PathBuf;
 
@@ -76,7 +77,13 @@ impl<R: Renderable, P: Parser<R>> Site<R, P> {
         // bypass cache for now. reduce complexity!
         match std::fs::read_to_string(input_path) {
             Ok(file) => match self.parser.parse(&*file) {
-                Ok(ast) => ast.render_html(),
+                Ok(ast) => crate::template::HomeTemplate {
+                    title: String::from("my title"),
+                    head: String::new(),
+                    body: ast.render_html(),
+                }
+                .render()
+                .unwrap(),
                 Err(e) => format!("error rendering: {:?} {:?}", input_path, e),
             },
             Err(e) => format!("error reading: {:?} {:?}", input_path, e),
@@ -86,7 +93,13 @@ impl<R: Renderable, P: Parser<R>> Site<R, P> {
     /// request a html page for a given url path
     pub fn request_html(&self, path: &str) -> String {
         match self.get_renderer(path) {
-            Ok(page) => page.render_html(),
+            Ok(page) => crate::template::HomeTemplate {
+                title: String::from("my title"),
+                head: String::new(),
+                body: page.render_html(),
+            }
+            .render()
+            .unwrap(),
             Err(e) => format!("error {:?}", e),
         }
     }

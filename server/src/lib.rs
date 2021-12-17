@@ -14,7 +14,9 @@ pub async fn start<R: Renderable + Sync + Send + 'static, P: Parser<R> + Sync + 
 
     let route = warp::path::full()
         .and(with_state)
-        .map(|path: FullPath, site: Arc<Site<R, P>>| site.render_html(&path.as_str().to_string()));
+        .map(|path: FullPath, site: Arc<Site<R, P>>| {
+            warp::reply::html(site.render_html(&path.as_str().to_string()))
+        });
 
     warp::serve(route)
         .run(host.unwrap_or(([127, 0, 0, 1], 3030).into()))
